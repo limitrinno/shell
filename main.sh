@@ -50,6 +50,8 @@ if [ $? -ne 0 ]; then
         systemctl enable docker
         systemctl restart docker
         echo -e "${green} Docker 安装完成 ${plain}"
+else
+	echo -e "${greenbg} 该机器已经安装了Docker ${plain}"
 fi
 }
 # ===== 脚本函数区  =====
