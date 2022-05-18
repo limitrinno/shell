@@ -39,8 +39,19 @@ fi
 
 
 # ===== 脚本函数区  =====
-
-
+centos_install_docker(){
+# 检查机器是否存在Docker
+ls /bin/docker > /dev/null 2>&1
+if [ $? -ne 0 ]; then
+	echo -e "${red} 检查到机器没有安装,准备开始下载 ${plain}" && sleep 2
+	yum install -y yum-utils device-mapper-persistent-data lvm2
+        yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+        yum install docker-ce docker-ce-cli containerd.io -y
+        systemctl enable docker
+        systemctl restart docker
+        echo -e "${green} Docker 安装完成 ${plain}"
+fi
+}
 # ===== 脚本函数区  =====
 
 
@@ -50,7 +61,7 @@ echo -e "
 ${greenbg}==================== Limit Main V22.05.18 ====================${plain}
 
 ${green}1.${plain} 检查服务器系统配置
-${green}2.${plain} Centos7 简单安装Docker
+${green}2.${plain} Centos7 安装Docker
 
 ${green}0.${plain} 退出脚本输入0
 
@@ -62,6 +73,7 @@ read -p "请输入选择 [1-10]:" num
 case $num in
 0)  exit;;
 1)  bash <(curl -sL http://43.132.193.125:5550/https://raw.githubusercontent.com/limitrinno/shell/master/check_server_information.sh);;
+2)  centos_install_docker;;
 *)  echo -e "${red} 选择不存在，重新进入脚本  ${plain}" && bash <(curl -sL http://43.132.193.125:5550/https://raw.githubusercontent.com/limitrinno/shell/master/main.sh);;
 esac
 # ===== 脚本主界面 =====
