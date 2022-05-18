@@ -57,34 +57,38 @@ fi
 
 # IPIPNeT 路由追踪
 ipiptracert1(){
-    case $tracertipip in
-    1)  sudo mkdir -p /mnt/besttrace && cd /mnt/besttrace && sudo wget https://cdn.ipip.net/17mon/besttrace4linux.zip && unzip besttrace4linux.zip && sudo chmod +x besttrace;;
-    2)  sudo mkdir -p /mnt/besttrace && cd /mnt/besttrace && sudo wget wget https://api.2331314.xyz/app/besttrace4linux.zip && unzip besttrace4linux.zip && sudo chmod +x besttrace;;
-    *)  clear && echo -e "${redbg} 有内鬼终止交易！！！ ${plain}" && exit;;
-    esac
-}
-ipiptracert(){
-    get_trac1=`ls /mnt/besttrace | wc -l`
-    yum -y install unzip && sudo apt install unzip
-    clear
-    read -p "
+read -p "
     输入 1 选择官方源
     
     输入 2 选择Limit备份源 ：" tracertipip
+case $tracertipip in
+	1)  sudo mkdir -p /mnt/ipipnet && cd /mnt/ipipnet && sudo wget https://cdn.ipip.net/17mon/besttrace4linux.zip && unzip besttrace4linux.zip && sudo chmod +x /mnt/ipipnet/besttrace4linux/besttrace;;
+	2)  sudo mkdir -p /mnt/ipipnet && cd /mnt/ipipnet && sudo wget wget http://43.132.193.125:5550/https://github.com/limitrinno/shell/blob/master/soft/besttrace4linux.zip
+unzip besttrace4linux.zip
+sudo chmod +x /mnt/ipipnet/besttrace4linux/besttrace;;
+	*)  clear && echo -e "${redbg} 有内鬼终止交易！！！ ${plain}" && exit;;
+esac
+}
+ipiptracert(){
+    get_trac1=`ls /mnt/ipipnet/besttrace4linux | wc -l`
+    yum -y install unzip && sudo apt install unzip
+    clear
     
-    if [ -d "/mnt/besttrace" ];then
-        if [ $get_trac1 == 8 ]; then
+    if [ -d "/mnt/ipipnet/besttrace4linux" ];then
+        if [ $get_trac1 == 2 ]; then
             echo "校验正确！继续运行！"
         else
+	    rm -rf /mnt/ipipnet/*
             ipiptracert1
         fi
     else
+	rm -rf /mnt/ipipnet/*
         ipiptracert1
     fi
     
     read -p "请输入需要进行路由测试的IP (默认:43.132.193.125)：" tracip
     tracip=${tracip:-43.132.193.125}
-    sudo /mnt/besttrace/besttrace -q 1 $tracip
+    sudo /mnt/ipipnet/besttrace4linux/besttrace -q 1 $tracip
 }
 # ===== 脚本函数区  =====
 
@@ -108,6 +112,7 @@ case $num in
 0)  exit;;
 1)  bash <(curl -sL http://43.132.193.125:5550/https://raw.githubusercontent.com/limitrinno/shell/master/check_server_information.sh);;
 2)  centos_install_docker;;
+3)  ipiptracert;;
 *)  echo -e "${red} 选择不存在，重新进入脚本  ${plain}" && bash <(curl -sL http://43.132.193.125:5550/https://raw.githubusercontent.com/limitrinno/shell/master/main.sh);;
 esac
 # ===== 脚本主界面 =====
