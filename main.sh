@@ -44,8 +44,6 @@ ${greenbg}==================== Limit Main V22.05.18 ====================${plain}
 
 ${green}1.${plain} 检查服务器系统配置
 ${green}2.${plain} Centos7 简单安装Docker
-${green}3.${plain} 临时系统代理(当国内的网络无法到达时使用)
-${green}5.${plain} 路由测试脚本-IPIPnet
 
 ${green}0.${plain} 退出脚本输入0
 
