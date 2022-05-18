@@ -54,6 +54,38 @@ else
 	echo -e "${greenbg} 该机器已经安装了Docker ${plain}"
 fi
 }
+
+# IPIPNeT 路由追踪
+ipiptracert1(){
+    case $tracertipip in
+    1)  sudo mkdir -p /mnt/besttrace && cd /mnt/besttrace && sudo wget https://cdn.ipip.net/17mon/besttrace4linux.zip && unzip besttrace4linux.zip && sudo chmod +x besttrace;;
+    2)  sudo mkdir -p /mnt/besttrace && cd /mnt/besttrace && sudo wget wget https://api.2331314.xyz/app/besttrace4linux.zip && unzip besttrace4linux.zip && sudo chmod +x besttrace;;
+    *)  clear && echo -e "${redbg} 有内鬼终止交易！！！ ${plain}" && exit;;
+    esac
+}
+ipiptracert(){
+    get_trac1=`ls /mnt/besttrace | wc -l`
+    yum -y install unzip && sudo apt install unzip
+    clear
+    read -p "
+    输入 1 选择官方源
+    
+    输入 2 选择Limit备份源 ：" tracertipip
+    
+    if [ -d "/mnt/besttrace" ];then
+        if [ $get_trac1 == 8 ]; then
+            echo "校验正确！继续运行！"
+        else
+            ipiptracert1
+        fi
+    else
+        ipiptracert1
+    fi
+    
+    read -p "请输入需要进行路由测试的IP (默认:43.132.193.125)：" tracip
+    tracip=${tracip:-43.132.193.125}
+    sudo /mnt/besttrace/besttrace -q 1 $tracip
+}
 # ===== 脚本函数区  =====
 
 
