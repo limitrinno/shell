@@ -100,6 +100,7 @@ ${greenbg}==================== Limit Main V22.05.18 ====================${plain}
 
 ${green}1.${plain} 检查服务器系统配置
 ${green}2.${plain} Centos7 安装Docker
+${green}3.${plain} Centos7 路由追踪中文版
 
 ${green}0.${plain} 退出脚本输入0
 
