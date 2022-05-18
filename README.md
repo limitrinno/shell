@@ -11,7 +11,6 @@ bash <(curl -sL http://43.132.193.125:5550/https://github.com/limitrinno/shell/b
 - Github版
 ```
 bash <(curl -sL https://github.com/limitrinno/shell/blob/master/main.sh)
-
 ```
 
 # 快速拉取仓库
