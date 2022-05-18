@@ -5,12 +5,12 @@
 
 - 国内版
 ```
-bash <(curl -sL http://43.132.193.125:5550/https://github.com/limitrinno/shell/blob/master/main.sh)
+bash <(curl -sL http://43.132.193.125:5550/https://raw.githubusercontent.com/limitrinno/shell/master/main.sh)
 ```
 
 - Github版
 ```
-bash <(curl -sL https://github.com/limitrinno/shell/blob/master/main.sh)
+bash <(curl -sL https://raw.githubusercontent.com/limitrinno/shell/master/main.sh)
 ```
 
 # 快速拉取仓库
