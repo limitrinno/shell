@@ -3,6 +3,8 @@
 - 检查服务器的配置
 - Centos7 一键安装Docker
 - Centos7 IPIPNet 中文路由跟踪
+- Linux 临时代理
+- Linux 工具箱
 
 # 快速调用脚本
 
@@ -18,5 +20,5 @@ bash <(curl -sL https://raw.githubusercontent.com/limitrinno/shell/master/main.s
 
 # 快速拉取仓库
 ```
-http://43.132.193.125:5550/https://github.com/limitrinno/shell.git
+git clone http://43.132.193.125:5550/https://github.com/limitrinno/shell.git
 ```
