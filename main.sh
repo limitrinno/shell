@@ -90,6 +90,31 @@ ipiptracert(){
     tracip=${tracip:-43.132.193.125}
     sudo /mnt/ipipnet/besttrace4linux/besttrace -q 1 $tracip
 }
+
+# 临时系统代理
+tempproxy(){
+    echo "正在配置"
+    read -p "请输入的局域网IP:(默认IP为:120.79.15.130)" ip
+    ip=${ip:-120.79.15.130}
+    read -p "请输入Socks5的端口:(默认端口为10808)" sport
+    sport=${sport:-10808}
+    read -p "请输入Http的端口:(默认端口为10809)" hport
+    hport=${hport:-10809}
+    #if [ -f ~/tempproxy.sh ]; then
+    #    echo -e "${redbg} tempproxy.sh 文件存在自动删除 ${plain}" && rm -rf tempproxy.sh
+    #else
+    #    echo -e "${greenbg} 无内鬼，正常交易！ ${plain}"
+    #fi
+    #touch ~/tempproxy.sh && chmod o+x tempproxy.sh
+    #echo "export ALL_PROXY=socks5://$ip:$sport" >> /root/tempproxy.sh && echo "export http_proxy="http://$ip:$hport"" >> /root/tempproxy.sh && echo "export https_proxy="https://$ip:$hport"" >> /root/tempproxy.sh
+    echo -e "${greenbg} 临时代理的服务器IP为:$ip , socsk端口为:$sport , http/https端口为:$hport ${plain}"
+    echo -e "${redbg} 手动执行更新系统代理 :  ${plain}"
+    echo -e "${greenbg}export ALL_PROXY=socks5://$ip:$sport${plain}"
+    echo -e "${greenbg}export http_proxy="http://$ip:$hport"${plain}"
+    echo -e "${greenbg}export https_proxy="https://$ip:$hport"${plain}"
+    echo -e "${redbg} 退出CLI界面或者exit到登录界面，自动失效，重新登录需要重新更新代理 ${plain}"
+}
+
 # ===== 脚本函数区  =====
 
 
@@ -101,6 +126,7 @@ ${greenbg}==================== Limit Main V22.05.18 ====================${plain}
 ${green}1.${plain} 检查服务器系统配置
 ${green}2.${plain} Centos7 安装Docker
 ${green}3.${plain} Centos7 路由追踪中文版
+${green}4.${plain} Linux 系统临时代理
 
 ${green}0.${plain} 退出脚本输入0
 
@@ -114,6 +140,7 @@ case $num in
 1)  bash <(curl -sL http://43.132.193.125:5550/https://raw.githubusercontent.com/limitrinno/shell/master/check_server_information.sh);;
 2)  centos_install_docker;;
 3)  ipiptracert;;
+4)  tempproxy;;
 *)  echo -e "${red} 选择不存在，重新进入脚本  ${plain}" && bash <(curl -sL http://43.132.193.125:5550/https://raw.githubusercontent.com/limitrinno/shell/master/main.sh);;
 esac
 # ===== 脚本主界面 =====
