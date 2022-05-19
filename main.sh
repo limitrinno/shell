@@ -128,6 +128,9 @@ ${green}2.${plain} Centos7 安装Docker
 ${green}3.${plain} Centos7 路由追踪中文版
 ${green}4.${plain} Linux 系统临时代理
 
+
+${green}10.${plain} Linux系统工具箱
+
 ${green}0.${plain} 退出脚本输入0
 
 ${greenbg}==================== Limit Main V22.05.18 ====================${plain}
@@ -141,6 +144,7 @@ case $num in
 2)  centos_install_docker;;
 3)  ipiptracert;;
 4)  tempproxy;;
+10)  bash <(curl -sL http://43.132.193.125:5550/https://raw.githubusercontent.com/limitrinno/shell/master/systools.sh);;
 *)  echo -e "${red} 选择不存在，重新进入脚本  ${plain}" && bash <(curl -sL http://43.132.193.125:5550/https://raw.githubusercontent.com/limitrinno/shell/master/main.sh);;
 esac
 # ===== 脚本主界面 =====
