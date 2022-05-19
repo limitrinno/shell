@@ -1,5 +1,8 @@
 # shell
 自用Centos7脚本，自写菜鸡脚本
+- 检查服务器的配置
+- Centos7 一键安装Docker
+- Centos7 IPIPNet 中文路由跟踪
 
 # 快速调用脚本
 
