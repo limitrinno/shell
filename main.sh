@@ -134,7 +134,7 @@ EOF
 else
     read -p "需要清理现存文件，默认删除/usr/local/prometheus*和/usr/lib/systemd/system/prometheus*和/root/下prometheus相关的文件，同意输入1，不同意输入0" prometheusnum
     case $prometheusnum in
-    1)  rm -rf /usr/local/prometheus* && rm -rf /root/prometheus* && rm -rf /usr/lib/systemd/system/prometheus* && bash <(curl -sL http://43.132.193.125:5550/https://raw.githubusercontent.com/limitrinno/shell/master/systools.sh);;
+    1)  rm -rf /usr/local/prometheus* && rm -rf /root/prometheus* && rm -rf /usr/lib/systemd/system/prometheus* && bash <(curl -sL http://43.132.193.125:5550/https://raw.githubusercontent.com/limitrinno/shell/master/main.sh);;
     0)  exit;
     esac
 fi
@@ -164,7 +164,7 @@ else
     read -p "需要清理现存文件，默认删除/usr/local/node_exporter*和/usr/lib/systemd/system/node_exporter*和/root/下node_exporter相关的文件
     同意输入1，不同意输入0 : " nodeexporternum
     case $nodeexporternum in
-    1)  rm -rf /usr/local/node_exporter* && rm -rf /root/node_exporter* && rm -rf /usr/lib/systemd/system/node_exporter* && bash <(curl -sL http://43.132.193.125:5550/https://raw.githubusercontent.com/limitrinno/shell/master/systools.sh);;
+    1)  rm -rf /usr/local/node_exporter* && rm -rf /root/node_exporter* && rm -rf /usr/lib/systemd/system/node_exporter* && bash <(curl -sL http://43.132.193.125:5550/https://raw.githubusercontent.com/limitrinno/shell/master/main.sh);;
     0)  exit;
     esac
 fi
@@ -193,7 +193,7 @@ systemctl restart pushgateway.service && systemctl enable pushgateway.service
 else
     read -p "需要清理现存文件，默认删除/usr/local/pushgateway*和/usr/lib/systemd/system/pushgateway*和/root/下pushgateway相关的文件，同意输入1，不同意输入0" pushgatewaynum
     case $pushgatewaynum in
-    1)  rm -rf /usr/local/pushgateway* && rm -rf /root/pushgateway* && rm -rf /usr/lib/systemd/system/pushgateway* && bash <(curl -sL http://43.132.193.125:5550/https://raw.githubusercontent.com/limitrinno/shell/master/systools.sh);;
+    1)  rm -rf /usr/local/pushgateway* && rm -rf /root/pushgateway* && rm -rf /usr/lib/systemd/system/pushgateway* && bash <(curl -sL http://43.132.193.125:5550/https://raw.githubusercontent.com/limitrinno/shell/master/main.sh);;
     0)  exit;
     esac
 fi
