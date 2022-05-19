@@ -199,6 +199,83 @@ else
 fi
 }
 
+v2raywlb(){
+    read -p " 
+    输入数字 0 (Vmess + websocket + TLS + Nginx + Website h2 和 ws 版本已合并)
+    
+    输入数字 1 (VLESS + websocket + TLS + Nginx + Website)
+    
+    输入数字 2 (VLESS + TCP + TLS + Nginx + WebSocket)
+    
+    输入数字 3 (VLESS + TCP + XTLS / TLS + Nginx + WebSocket 共存版) :" v2wlb
+    case $v2wlb in
+    0)  wget -N --no-check-certificate -q -O install.sh "https://raw.githubusercontent.com/wulabing/V2Ray_ws-tls_bash_onekey/master/install.sh" && chmod +x install.sh && bash install.sh;;
+    1)  wget -N --no-check-certificate -q -O install.sh "https://raw.githubusercontent.com/wulabing/V2Ray_ws-tls_bash_onekey/dev/install.sh" && chmod +x install.sh && bash install.sh;;
+    2)  wget -N --no-check-certificate -q -O install.sh "https://raw.githubusercontent.com/wulabing/Xray_onekey/nginx_forward/install.sh" && chmod +x install.sh && bash install.sh;;
+    3)  wget -N --no-check-certificate -q -O install.sh "https://raw.githubusercontent.com/wulabing/Xray_onekey/main/install.sh" && chmod +x install.sh && bash install.sh;;
+    *)  clear && echo -e "${redbg} 有内鬼终止交易！！！ ${plain}" && exit;;
+    esac
+}
+
+v2rayofficial(){
+    cd ~
+    curl -O https://raw.githubusercontent.com/v2fly/fhs-install-v2ray/master/install-release.sh
+    curl -O https://raw.githubusercontent.com/v2fly/fhs-install-v2ray/master/install-dat-release.sh
+    echo "开始安装V2fly最新脚本"
+    sleep 1
+    bash install-release.sh
+    echo "开始安装最新版的IP数据库"
+    bash install-dat-release.sh
+    systemctl restart v2ray && systemctl enable v2ray
+    echo "开始清理安装垃圾文件"
+    rm -rf install-releases.sh install-dat-release.sh
+    echo "请到目录修改文件(/usr/local/etc/v2ray)，V2ray已经安装完成！"
+}
+
+Speedtestx(){
+    docker run -d --name=speedtest -e MAX_LOG_COUNT=9999 -e IP_SERVICE=ip.sb -e SAME_IP_MULTI_LOGS=true -p 12345:80 --restart=always -it badapple9/speedtest-x
+}
+
+npcclient(){
+    get_dockernpc=`docker ps | grep npc | wc -l`
+    echo "正在配置NPC客户端的信息，根据相关信息进行填写:"
+    read -p "请输入的NPS服务器IP:(默认IP为:43.132.193.125)" npsip
+    npsip=${npsip:-43.132.193.125}
+    read -p "请输入NPS服务器的端口:(默认端口为8024)" npsport
+    npsport=${npsport:-8024}
+    read -p "请输入NPS的密钥:" npckey
+    hport=${npckey:-123}
+    if [ $get_dockernpc == 0 ]; then
+        docker run -d --name npc --net=host --restart=always ffdfgdfg/npc -server=$npsip:$npsport -vkey=$npckey
+        echo -e "${greenbg} NPS服务器IP为:$npsip , NPS的端口为:$npsport , NPC的密钥为:$npckey ${plain}"
+    else
+        echo -e "${greenbg} Docker下已有NPS程序在运行了！ ${plain}"
+    fi
+}
+
+statusserver(){
+    get_python3=`rpm -qa | grep python3 | wc -l`
+    if [ $get_python3 == 0 ]
+    then
+        yum -y install python3
+    else
+        echo "Python3环境已存在，跳过！！！"
+    fi
+    echo "正在配置客户端的信息，根据相关信息进行填写:"
+    read -p "请输入的监控服务器IP:(默认IP为:43.132.193.125)" statusip
+    statusip=${statusip:-43.132.193.125}
+    read -p "请输入监控端的名字:(默认为s10)" statusclient
+    statusclient=${statusclient:-s10}
+    if [ -e ~/client-linux.py ]
+    then
+            rm -rf client-linux.py
+            wget --no-check-certificate -qO client-linux.py 'https://api.2331314.xyz/sh/statuspy/client-linux.py' && nohup python3 client-linux.py SERVER=$statusip USER=$statusclient  >/dev/null 2>&1 &
+    else
+            wget --no-check-certificate -qO client-linux.py 'https://api.2331314.xyz/sh/statuspy/client-linux.py' && nohup python3 client-linux.py SERVER=$statusip USER=$statusclient  >/dev/null 2>&1 &
+    fi
+    echo "nohup python3 client-linux.py SERVER=$statusip USER=$statusclient  >/dev/null 2>&1 &"
+}
+
 # ===== 脚本函数区  =====
 
 
@@ -211,13 +288,24 @@ ${green}1.${plain} 检查服务器系统配置
 ${green}2.${plain} Centos7 安装Docker
 ${green}3.${plain} Centos7 路由追踪中文版
 ${green}4.${plain} Linux 系统临时代理
-
+${green}5.${plain} 一键安装常用编译环境(Centos7)
 
 ${green}10.${plain} Linux系统工具箱
 
 ${green}21.${plain} 一键安装prometheus V2.34.0
 ${green}22.${plain} 一键安装nodeexporter V1.3.1
 ${green}23.${plain} 一键安装pushgateway V1.4.2
+
+${green}31.${plain} V2ray-wulabing(推荐使用,稳定更新)
+${green}32.${plain} V2ray-official(需要自行配置文件,慎用)
+${green}33.${plain} Trojan-Web
+${green}34.${plain} 中转脚本-Gost(常用于富强中转)
+
+${green}41.${plain} 一键加入StatusServer流量监控(自用)
+
+${green}101.${plain} Docker-Speedtest-X(端口12345)
+${green}102.${plain} Docker-Npc Client
+
 
 ${green}0.${plain} 退出脚本输入0
 
@@ -232,10 +320,19 @@ case $num in
 2)  centos_install_docker;;
 3)  ipiptracert;;
 4)  tempproxy;;
+5)  yum -y install make zlib zlib-devel gcc gcc-c++ libtool openssl openssl-devel vim && yum -y groupinstall base && yum -y update && yum -y upgrade;;
 10)  bash <(curl -sL http://43.132.193.125:5550/https://raw.githubusercontent.com/limitrinno/shell/master/systools.sh);;
 21)  prometheus;;
-21)  nodeexporter;;
-21)  pushgateway;;
+22)  nodeexporter;;
+23)  pushgateway;;
+31)  v2raywlb;;
+32)  v2rayofficial;;
+33)  trojanweb;;
+34)  wget --no-check-certificate -O gost.sh https://raw.githubusercontent.com/KANIKIG/Multi-EasyGost/master/gost.sh && chmod +x gost.sh && ./gost.sh;;
+41)  statusserver;;
+101)  Speedtestx;;
+102)  npcclient;;
+
 *)  echo -e "${red} 选择不存在，重新进入脚本  ${plain}" && bash <(curl -sL http://43.132.193.125:5550/https://raw.githubusercontent.com/limitrinno/shell/master/main.sh);;
 esac
 # ===== 脚本主界面 =====
