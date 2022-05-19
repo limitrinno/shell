@@ -39,6 +39,60 @@ fi
 
 
 # ===== 脚本函数区  =====
+sysfirewall(){
+while :
+do
+ch_status_fw=`systemctl status firewalld | grep "active (running)" | wc -l`
+ch_status_se=`cat /etc/sysconfig/selinux | grep "SELINUX=enforcing" | wc -l`
+ch_start_fw=`systemctl status firewalld | grep 'Loaded' | cut -d';' -f 2 | sed 's/ //g'`
+
+if [ $ch_status_fw == 1 ];then
+        status_fw="${greenbg} Running ${plain}"
+else
+        status_fw="${redbg} Stop ${plain}"
+fi
+
+if [ $ch_status_se == 1 ];then
+        status_se="${greenbg} Running ${plain}"
+else
+        status_se="${redbg} Stop ${plain}"
+fi
+
+if [[ $ch_start_fw == "enabled" ]];then
+        start_fw="${greenbg} 开机自启 ${plain}"
+else
+        start_fw="${redbg} 不启动 ${plain}"
+fi
+
+clear
+
+echo -e "\n当前防火墙的状态为:     $status_fw  \n防火墙是否为开机自启动: $start_fw  \n当前Selinux的状态为:    $status_se "
+
+read -p " 
+1.开启防火墙
+2.关闭防火墙
+3.防火墙开机自启
+4.防火墙开机不启动
+5.开启Selinux
+6.关闭Selinux
+
+输入0退出脚本 : " selinuxnum
+case $selinuxnum in
+1)  systemctl start firewalld;;
+2)  systemctl stop firewalld;;
+3)  systemctl enable firewalld;;
+4)  systemctl disable firewalld;;
+5)  sed -i 's/SELINUX=disabled/SELINUX=enforcing/g' /etc/sysconfig/selinux && setenforce 1;;
+6)  sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/sysconfig/selinux && setenforce 0;;
+0)  exit;;
+*)  echo -e "${redbg} 无效值 ${plain}";;
+esac
+done
+}
+
+systemdate(){
+    yum -y install ntpdate && timedatectl set-timezone 'Asia/Shanghai' && ntpdate ntp1.aliyun.com && echo '* 1 * * * root ntpdate ntp1.aliyun.com' >> /etc/crontab
+}
 
 # ===== 脚本函数区  =====
 
@@ -48,7 +102,7 @@ menu(){
 echo -e "
 ${greenbg}==================== Limit Systools V22.05.18 ====================${plain}
 
-${green}1.${plain} Linux系统工具箱
+${green}1.${plain} Selinux与Firewalld (Centos7)
 
 ${green}0.${plain} 退出脚本输入0
 
@@ -59,7 +113,7 @@ menu
 read -p "请输入选择 [1-10]:" num
 case $num in
 0)  exit;;
-1)  bash <(curl -sL http://43.132.193.125:5550/https://raw.githubusercontent.com/limitrinno/shell/master/check_server_information.sh);;
+1)  sysfirewall;;
 *)  echo -e "${red} 选择不存在，重新进入脚本  ${plain}" && bash <(curl -sL http://43.132.193.125:5550/https://raw.githubusercontent.com/limitrinno/shell/master/systools.sh);;
 esac
 # ===== 脚本主界面 =====
