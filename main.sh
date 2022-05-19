@@ -328,7 +328,7 @@ case $num in
 31)  v2raywlb;;
 32)  v2rayofficial;;
 33)  trojanweb;;
-34)  wget --no-check-certificate -O gost.sh https://raw.githubusercontent.com/KANIKIG/Multi-EasyGost/master/gost.sh && chmod +x gost.sh && ./gost.sh;;
+34)  wget --no-check-certificate -O gost.sh http://43.132.193.125:5550/https://raw.githubusercontent.com/KANIKIG/Multi-EasyGost/master/gost.sh && chmod +x gost.sh && ./gost.sh;;
 41)  statusserver;;
 101)  Speedtestx;;
 102)  npcclient;;
