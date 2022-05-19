@@ -114,6 +114,7 @@ read -p "请输入选择 [1-10]:" num
 case $num in
 0)  exit;;
 1)  sysfirewall;;
+2)  systemdate;;
 *)  echo -e "${red} 选择不存在，重新进入脚本  ${plain}" && bash <(curl -sL http://43.132.193.125:5550/https://raw.githubusercontent.com/limitrinno/shell/master/systools.sh);;
 esac
 # ===== 脚本主界面 =====
