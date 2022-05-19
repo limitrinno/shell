@@ -115,6 +115,90 @@ tempproxy(){
     echo -e "${redbg} 退出CLI界面或者exit到登录界面，自动失效，重新登录需要重新更新代理 ${plain}"
 }
 
+prometheus(){
+    ch_prometheus=`ls /usr/local | grep 'prometheus' | wc -l`
+    ch_prometheusenable=`ls /usr/lib/systemd/system | grep 'prometheus' | wc -l`
+if [[ $ch_prometheus == '0' && $ch_prometheusenable == '0' ]];then
+    cd ~ && yum -y install wget && wget  http://43.132.193.125:5550/https://github.com/prometheus/prometheus/releases/download/v2.34.0/prometheus-2.34.0.linux-amd64.tar.gz && tar -zxvf prometheus-2.34.0.linux-amd64.tar.gz && mv prometheus-2.34.0.linux-amd64 /usr/local/prometheus && rm -rf prometheus-2.34.0.linux-amd64.tar.gz
+    cat >> /usr/lib/systemd/system/prometheus.service << EOF
+[Unit]
+Description=https://prometheus.io
+[Service]
+Restart=on-failure
+ExecStart=/usr/local/prometheus/prometheus --config.file=/usr/local/prometheus/prometheus.yml
+[Install]
+WantedBy=multi-user.target
+EOF
+    systemctl daemon-reload
+    systemctl restart prometheus.service && systemctl enable prometheus.service
+else
+    read -p "需要清理现存文件，默认删除/usr/local/prometheus*和/usr/lib/systemd/system/prometheus*和/root/下prometheus相关的文件，同意输入1，不同意输入0" prometheusnum
+    case $prometheusnum in
+    1)  rm -rf /usr/local/prometheus* && rm -rf /root/prometheus* && rm -rf /usr/lib/systemd/system/prometheus* && bash <(curl -sL http://43.132.193.125:5550/https://raw.githubusercontent.com/limitrinno/shell/master/systools.sh);;
+    0)  exit;
+    esac
+fi
+}
+
+nodeexporter(){
+    ch_node_exporter=`ls /usr/local | grep 'node_exporter' | wc -l`
+    ch_node_exporter=`ls /usr/lib/systemd/system | grep 'node_exporter' | wc -l`
+if [[ $ch_node_exporter == '0' && $ch_node_exporter == '0' ]];then
+    cd ~ && yum -y install wget && wget http://43.132.193.125:5550/https://github.com/prometheus/node_exporter/releases/download/v1.3.1/node_exporter-1.3.1.linux-amd64.tar.gz && tar -zxvf node_exporter-1.3.1.linux-amd64.tar.gz && mv node_exporter-1.3.1.linux-amd64 /usr/local/node_exporter && rm -rf node_exporter-1.3.1.linux-amd64.tar.gz
+    cat >> /usr/lib/systemd/system/node_exporter.service << EOF
+[Unit]
+Description=node_export
+Documentation=https://github.com/prometheus/node_exporter
+After=network.target
+[Service]
+Type=simple
+User=root
+ExecStart=/usr/local/node_exporter/node_exporter --collector.disable-defaults --collector.cpu --collector.cpufreq --collector.diskstats --collector.meminfo --collector.netstat --collector.filesystem --collector.loadavg --collector.netdev --collector.time --collector.uname --collector.stat
+Restart=on-failure
+[Install]
+WantedBy=multi-user.target
+EOF
+systemctl daemon-reload
+systemctl restart node_exporter.service && systemctl enable node_exporter.service
+else
+    read -p "需要清理现存文件，默认删除/usr/local/node_exporter*和/usr/lib/systemd/system/node_exporter*和/root/下node_exporter相关的文件
+    同意输入1，不同意输入0 : " nodeexporternum
+    case $nodeexporternum in
+    1)  rm -rf /usr/local/node_exporter* && rm -rf /root/node_exporter* && rm -rf /usr/lib/systemd/system/node_exporter* && bash <(curl -sL http://43.132.193.125:5550/https://raw.githubusercontent.com/limitrinno/shell/master/systools.sh);;
+    0)  exit;
+    esac
+fi
+}
+
+pushgateway(){
+    ch_pushgateway=`ls /usr/local | grep 'pushgateway' | wc -l`
+    ch_pushgateway=`ls /usr/lib/systemd/system | grep 'pushgateway' | wc -l`
+if [[ $ch_pushgateway == '0' && $ch_pushgateway == '0' ]];then
+    cd ~ && yum -y install wget && wget http://43.132.193.125:5550/https://github.com/prometheus/pushgateway/releases/download/v1.4.2/pushgateway-1.4.2.linux-amd64.tar.gz && tar -zxvf pushgateway-1.4.2.linux-amd64.tar.gz && mv pushgateway-1.4.2.linux-amd64 /usr/local/pushgateway && mv pushgateway-1.4.2.linux-amd64.tar.gz /usr/local/pushgateway/ && rm -rf pushgateway-1.4.2.linux-amd64.tar.gz
+    cat >> /usr/lib/systemd/system/pushgateway.service << EOF
+[Unit]
+Description=pushgateway
+Documentation=https://github.com/prometheus/pushgateway
+After=network.target
+[Service]
+Type=simple
+User=root
+ExecStart= /usr/local/pushgateway/pushgateway
+Restart=on-failure
+[Install]
+WantedBy=multi-user.target
+EOF
+systemctl daemon-reload
+systemctl restart pushgateway.service && systemctl enable pushgateway.service
+else
+    read -p "需要清理现存文件，默认删除/usr/local/pushgateway*和/usr/lib/systemd/system/pushgateway*和/root/下pushgateway相关的文件，同意输入1，不同意输入0" pushgatewaynum
+    case $pushgatewaynum in
+    1)  rm -rf /usr/local/pushgateway* && rm -rf /root/pushgateway* && rm -rf /usr/lib/systemd/system/pushgateway* && bash <(curl -sL http://43.132.193.125:5550/https://raw.githubusercontent.com/limitrinno/shell/master/systools.sh);;
+    0)  exit;
+    esac
+fi
+}
+
 # ===== 脚本函数区  =====
 
 
@@ -131,6 +215,10 @@ ${green}4.${plain} Linux 系统临时代理
 
 ${green}10.${plain} Linux系统工具箱
 
+${green}21.${plain} 一键安装prometheus V2.34.0
+${green}22.${plain} 一键安装nodeexporter V1.3.1
+${green}23.${plain} 一键安装pushgateway V1.4.2
+
 ${green}0.${plain} 退出脚本输入0
 
 ${greenbg}==================== Limit Main V22.05.18 ====================${plain}
@@ -145,6 +233,9 @@ case $num in
 3)  ipiptracert;;
 4)  tempproxy;;
 10)  bash <(curl -sL http://43.132.193.125:5550/https://raw.githubusercontent.com/limitrinno/shell/master/systools.sh);;
+21)  prometheus;;
+21)  nodeexporter;;
+21)  pushgateway;;
 *)  echo -e "${red} 选择不存在，重新进入脚本  ${plain}" && bash <(curl -sL http://43.132.193.125:5550/https://raw.githubusercontent.com/limitrinno/shell/master/main.sh);;
 esac
 # ===== 脚本主界面 =====
