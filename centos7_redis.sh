@@ -43,7 +43,7 @@ redisyouwenjian(){
         echo "redis文件存在请删除后进行操作!"
         read -p "输入0退出程序，输入1自动清理redis文件，并且再次运行，自动清理当前目录redis字样的文件，以及/usr/local/redis文件夹" redisnum1
         case $redisnum1 in
-            1)  rm -rf redis* && rm -rf /usr/local/redis && bash <(curl -sL https://api.2331314.xyz/sh/redis.sh);;
+            1)  rm -rf redis* && rm -rf /usr/local/redis && bash <(curl -sL http://43.132.193.125:5550/https://raw.githubusercontent.com/limitrinno/shell/master/centos7_redis.sh);;
             0)  exit;;
             *)  exit;;
         esac
