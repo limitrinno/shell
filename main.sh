@@ -276,6 +276,10 @@ statusserver(){
     echo "nohup python3 client-linux.py SERVER=$statusip USER=$statusclient  >/dev/null 2>&1 &"
 }
 
+systemdate(){
+    yum -y install ntpdate && timedatectl set-timezone 'Asia/Shanghai' && ntpdate ntp1.aliyun.com && echo '* 1 * * * root ntpdate ntp1.aliyun.com' >> /etc/crontab
+}
+
 # ===== 脚本函数区  =====
 
 
@@ -289,6 +293,7 @@ ${green}2.${plain} Centos7 安装Docker
 ${green}3.${plain} Centos7 路由追踪中文版
 ${green}4.${plain} Linux 系统临时代理
 ${green}5.${plain} 一键安装常用编译环境(Centos7)
+${green}6.${plain} 一键修改上海时区写入计划任务小小时同步(Centos7)
 
 ${green}10.${plain} Linux系统工具箱
 
@@ -321,6 +326,7 @@ case $num in
 3)  ipiptracert;;
 4)  tempproxy;;
 5)  yum -y install make zlib zlib-devel gcc gcc-c++ libtool openssl openssl-devel vim && yum -y groupinstall base && yum -y update && yum -y upgrade;;
+6)  systemdate;;
 10)  bash <(curl -sL http://43.132.193.125:5550/https://raw.githubusercontent.com/limitrinno/shell/master/systools.sh);;
 21)  prometheus;;
 22)  nodeexporter;;
